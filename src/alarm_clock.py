@@ -7,11 +7,20 @@ import time
 import logging
 import sys
 
+try:
+    from modules import beep as myBeep
+except ImportError:
+    from modules import beep_win as myBeep
+
+
 class AlarmClock:
     """
     Class to manage the alarm clock 
     """
     def __init__(self, args):
+        """
+        setup the alarm clock class with logger check 
+        """
         self.log_level = logging.ERROR
         self.alarm_time = ""
         if args:
@@ -21,31 +30,46 @@ class AlarmClock:
         self.log(logging.DEBUG, f"Set alarm to   {self.alarm_time}")
 
     def run(self):
+        """
+        running the alarmclock and check for probes
+        """
         while self.checks() is False:
             if self.alarm_time < datetime.datetime.now():
                 self.beep()
-                exit(0)
+                sys.exit(0)
             else:
                 time.sleep(1)
         self.make_clear()
 
     def beep(self):
-        for i in range(1, 1000):
-            print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
+        """
+        Oh, oh, the bell is ringing 
+        """
+        myBeep.beep()
+
 
     def checks(self):
+        """
+        check ever probe and return status
+        """
         return False
 
     def make_clear(self):
+        """
+        clean up every thing
+        """
         return
 
     def handle_options(self, arguments):
+        """
+        takes all arguments an read the options out of it
+        """
         parser = argparse.ArgumentParser(
                     prog='alarm_clock',
                     description='Building AEA Desktop tools')
         parser.add_argument('-v', '--verbose', action='count', dest='verbose', default=0)
         parser.add_argument('-a', '--alarm', action='store', dest='alarm', default="")
-        args = parser.parse_known_args(arguments)
+        args, remainder = parser.parse_known_args(arguments)
         arg = vars(args)
         for key in arg.keys():
             if 'alarm' == key:
@@ -59,8 +83,13 @@ class AlarmClock:
                     self.log_level = logging.INFO
                 elif arg[key] == 1:
                     self.log_level = logging.WARNING
+        for r in remainder:
+            print(f"unknown option {r}")
 
     def log(self, level, msg: str):
+        """
+        write log to
+        """
         logger = logging.getLogger()
         logger.log(level, msg)
 
