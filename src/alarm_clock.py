@@ -21,21 +21,21 @@ class AlarmClock:
         self.log(logging.DEBUG, f"Set alarm to   {self.alarm_time}")
 
     def run(self):
-        while False == self.checks():
+        while self.checks() is False:
             if self.alarm_time < datetime.datetime.now():
                 self.beep()
                 exit(0)
             else:
                 time.sleep(1)
         self.make_clear()
-    
+
     def beep(self):
         for i in range(1, 1000):
             print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
 
     def checks(self):
         return False
-    
+
     def make_clear(self):
         return
 
@@ -45,7 +45,7 @@ class AlarmClock:
                     description='Building AEA Desktop tools')
         parser.add_argument('-v', '--verbose', action='count', dest='verbose', default=0)
         parser.add_argument('-a', '--alarm', action='store', dest='alarm', default="")
-        args, remainder = parser.parse_known_args(arguments)
+        args = parser.parse_known_args(arguments)
         arg = vars(args)
         for key in arg.keys():
             if 'alarm' == key:
@@ -66,12 +66,12 @@ class AlarmClock:
 
 
 if __name__ == "__main__":
-    logging.basicConfig(level=logging.ERROR, format="%(asctime)s - %(message)s", 
+    logging.basicConfig(level=logging.ERROR, format="%(asctime)s - %(message)s",
                         datefmt="%Y-%m-%d %H:%M:%S")
 
     try:
         alarm = AlarmClock(sys.argv)
         alarm.run()
         sys.exit(0)
-    except Exception as error:
+    except ValueError as error:
         logging.error(error)
