@@ -3,8 +3,9 @@ This module is running the acoustic signal if the alarm clock was not stopped be
 can only run on the raspberry because it uses GPIOs
 """
 
+from datetime import datetime, timedelta
 import logging
-from datetime import  time, timedelta
+import time
 
 from  gpiozero import PWMOutputDevice
 
@@ -16,10 +17,10 @@ def beep():
     buzzer=PWMOutputDevice(21, active_high=True, initial_value=1, frequency=400,
                             pin_factory=None)
     buzzer.pulse(1,1)
-    end_time = time.now() + timedelta(minute=6)
+    end_time = datetime.now() + timedelta(minutes=6)
     logging.getLogger().info("end at %s", end_time)
 
-    while end_time > time.now():
+    while end_time > datetime.now():
         time.sleep(10)
 
     logging.getLogger().info("clear up")
