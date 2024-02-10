@@ -1,6 +1,6 @@
 """
 This module is running the acoustic signal if the alarm clock was not stopped before
-can only run on the raspberry because it uses GPIO's
+can only run on the raspberry because it uses GPIOs
 """
 
 import logging
