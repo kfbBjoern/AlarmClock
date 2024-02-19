@@ -12,6 +12,10 @@ try:
 except ImportError:
     from modules import beep_win as myBeep
 
+try:
+    from modules import checks as myCheck
+except ImportError:
+    from modules import checks_win as myCheck
 
 class AlarmClock:
     """
@@ -52,6 +56,14 @@ class AlarmClock:
         """
         check ever probe and return status
         """
+        button =  myCheck.check_buttons()
+        if button == 2:
+            self.log(logging.DEBUG, "Wrong wire Boom")
+            self.beep()
+        if button == 1:
+            self.log(logging.DEBUG, "checks done")
+            return True
+        self.log(logging.DEBUG, "checks failed")
         return False
 
     def make_clear(self):
