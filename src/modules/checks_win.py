@@ -17,3 +17,10 @@ def check_buttons():
         return 2
     sleep(2)
     return  0
+
+
+def check_temperature():
+    """checks that a flame is near the nail"""
+    if TEST_RUN > 8:
+        return True, TEST_RUN
+    return False, TEST_RUN
