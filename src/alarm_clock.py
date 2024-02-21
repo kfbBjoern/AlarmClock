@@ -57,13 +57,14 @@ class AlarmClock:
         check ever probe and return status
         """
         button =  myCheck.check_buttons()
+        temp, value = myCheck.check_temperature()
         if button == 2:
             self.log(logging.DEBUG, "Wrong wire Boom")
             self.beep()
-        if button == 1:
+        if button == 1 and temp:
             self.log(logging.DEBUG, "checks done")
             return True
-        self.log(logging.DEBUG, "checks failed")
+        self.log(logging.DEBUG, f"checks failed wire {button} temp {temp}/{value}")
         return False
 
     def make_clear(self):
